@@ -159,6 +159,10 @@ export default function SignIn() {
         />
       </View>
       <View style={styles.footer}>
+        <Text style={[Font.l, ClassColor.c8]}>ENVIROMENT</Text>
+        <Text>{process.env.EXPO_PUBLIC_URBANIFY_API}</Text>
+        <Text>{process.env.EXPO_PUBLIC_URBANIFY_SECRET_TOKEN}</Text>
+        <Text>{process.env.EXPO_PUBLIC_URBANIFY_STORAGE_REPORTS}</Text>
         <Text style={[Font.xs, ClassColor.c6, { textAlign: "center" }]}>
           Copyright ©2020 Produced by Ant Finance Experience Technology
           Department

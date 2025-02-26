@@ -21,7 +21,7 @@ import { RenderReport } from "@/components/RenderList";
 import { SeverityEnumType } from "@//constants/severityEnum";
 import { clearAllStorage } from "@/hooks/useSyncReportsOffline";
 
-const Home = () => {
+export default function Home() {
   const { reports, loadReports, createReport } = useReports(); // Pega a lista de reports monitorada
   const { photo, handleCapture, setPhoto } = useCapture(); // Controle da Câmera
   const [confirmDeleteModalVisible, setConfirmDeleteModalVisible] =
@@ -242,4 +242,3 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;

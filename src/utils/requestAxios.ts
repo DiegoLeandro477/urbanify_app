@@ -5,7 +5,15 @@ export default function AxiosHTTP() {
   const API_URL = process.env.EXPO_PUBLIC_URBANIFY_API;
   const { getToken } = useAsyncStorage();
 
-  const postJSON = async (url: string, data: any) => {
+  const Login = async (data: any) => {
+    try {
+      return await axios.post(`${API_URL}/user/login`, data)
+    } catch (err) {
+      console.error("[LOGIN]: ",err)
+    }
+  }
+
+  const POST = async (url: string, data: any) => {
     const token = await getToken();
     try {
       return await axios.post(`${API_URL}${url}`, data, {
@@ -40,7 +48,6 @@ export default function AxiosHTTP() {
 
   const GET = async (complement: string) => {
     const token = await getToken();
-    console.log("url => ", `${API_URL}${complement}`);
     try {
       return await axios.get(`${API_URL}${complement}`, {
         headers: {
@@ -55,5 +62,5 @@ export default function AxiosHTTP() {
     }
   };
 
-  return { postJSON, POST_FormData, GET };
+  return { POST, POST_FormData, GET, Login };
 }

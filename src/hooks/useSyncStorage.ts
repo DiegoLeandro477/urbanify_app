@@ -3,11 +3,10 @@
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SecureStore from "expo-secure-store";
-import { useState } from "react";
 
 export default function useAsyncStorage() {
-  const [role, setRole] = useState<string | null>(null);
   const secret_token = process.env.EXPO_PUBLIC_URBANIFY_SECRET_TOKEN!
+  const storage_reports = process.env.EXPO_PUBLIC_URBANIFY_STORAGE_REPORTS!
   
   const getRole = async () => {
     try {
@@ -17,28 +16,35 @@ export default function useAsyncStorage() {
     }
   };
 
-  const saveRole = async (role_: string) => {
+  const setRole = async (role: string) => {
     try {
-      await AsyncStorage.setItem("role", role_);
-      setRole(role_);
+      await AsyncStorage.setItem("role", role);
     } catch (err) {
       console.log("[ROLE]: ", err);
     }
   };
 
-  const getToken = async () => {
+  const getToken = async (): Promise<string> => {
     try {
-      return await SecureStore.getItemAsync(secret_token);
+      return await SecureStore.getItemAsync(secret_token) || "";
     } catch (err) {
       console.error("[TOKEN]: ", err);
-      return null;
+      return "";
     }
   };
 
+  const setToken = async (token: string) => {
+    try {
+      await SecureStore.setItemAsync(secret_token, token);
+    } catch (err) {
+      console.log("[TOKEN]: ", err);
+    }
+  }
+
   return {
     getRole,
-    saveRole,
-    role,
+    setRole,
     getToken,
+    setToken,
   };
 }

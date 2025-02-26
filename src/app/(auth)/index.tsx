@@ -9,15 +9,20 @@ import {
   View,
 } from "react-native";
 
+const enum RoleEnum {
+  ADMIN = 'ADMIN',
+  USER = 'USER'
+}
+
 export default function ProviderRole() {
   const { getRole } = useAsyncStorage();
   useEffect(() => {
     const checkRole = async () => {
       try {
         const role = await getRole();
-        if (role === "ADMIN") {
+        if (role === RoleEnum.ADMIN) {
           router.replace("/homePage");
-        } else if (role === "USER") {
+        } else if (role === RoleEnum.USER) {
           router.replace("/adminPage");
         }
       } catch (err) {
