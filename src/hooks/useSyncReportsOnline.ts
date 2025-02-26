@@ -1,6 +1,4 @@
-import * as SecureStore from "expo-secure-store";
 import { Report } from "../components/homeComponents/ReportInterface";
-import axios from "axios";
 import {
   removeReportOffline,
   saveReportOffilne,
@@ -8,20 +6,22 @@ import {
 import { SeverityEnum } from "@//constants/severityEnum";
 import { StatusEnum, StatusEnumType } from "@//constants/statusEnum";
 import requestHTPP from "@/utils/requestAxios";
+import useAsyncStorage from "@/hooks/useSyncStorage";
 
 const useSyncReportsOnline = () => {
-  const { getReportOn, postFormData } = requestHTPP();
+  const { GET, POST_FormData } = requestHTPP();
+  const {getToken} = useAsyncStorage();
   const getStatusReportOn = async (report: Report) => {
     let status: StatusEnumType | undefined = undefined;
     try {
       console.log(`Obtendo dados do Report: id->[${report.id}]`);
 
-      const token = await SecureStore.getItemAsync("authToken");
+      const token = await getToken();
       if (!token) return;
 
       const url = `/report/status/address/${report.address}/geohash/${report.geohash}`;
 
-      const response = await getReportOn(url);
+      const response = await GET(url);
       if (!response) return;
       status = StatusEnum[response?.data.status as keyof typeof StatusEnum];
     } catch (error) {
@@ -66,7 +66,7 @@ const useSyncReportsOnline = () => {
         throw new Error("No valid image provided.");
       }
       // Envia os dados para o Xano
-      const response = await postFormData("/report", formData);
+      const response = await POST_FormData("/report", formData);
 
       if (!response) return;
       console.log("[DATABASE]: ", response.data.message);

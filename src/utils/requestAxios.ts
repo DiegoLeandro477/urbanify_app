@@ -3,11 +3,10 @@ import axios from "axios";
 
 export default function AxiosHTTP() {
   const API_URL = process.env.EXPO_PUBLIC_URBANIFY_API;
-  const secretToken = process.env.EXPO_PUBLIC_URBANIFY_SECRET_TOKEN;
   const { getToken } = useAsyncStorage();
 
   const postJSON = async (url: string, data: any) => {
-    const token = await getToken(secretToken!);
+    const token = await getToken();
     try {
       return await axios.post(`${API_URL}${url}`, data, {
         headers: {
@@ -22,8 +21,9 @@ export default function AxiosHTTP() {
     }
   };
 
-  const postFormData = async (complement: string, data: any) => {
-    const token = await getToken(secretToken!);
+  const POST_FormData = async (complement: string, data: any) => {
+    const token = await getToken();
+    if (!token) throw Error("Token nao encontrado");
     try {
       return await axios.post(`${API_URL}${complement}`, data, {
         headers: {
@@ -38,8 +38,8 @@ export default function AxiosHTTP() {
     }
   };
 
-  const getReportOn = async (complement: string) => {
-    const token = await getToken(secretToken!);
+  const GET = async (complement: string) => {
+    const token = await getToken();
     console.log("url => ", `${API_URL}${complement}`);
     try {
       return await axios.get(`${API_URL}${complement}`, {
@@ -55,5 +55,5 @@ export default function AxiosHTTP() {
     }
   };
 
-  return { postJSON, postFormData, getReportOn };
+  return { postJSON, POST_FormData, GET };
 }

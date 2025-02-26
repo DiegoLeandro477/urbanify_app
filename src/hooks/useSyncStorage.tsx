@@ -7,6 +7,8 @@ import { useState } from "react";
 
 export default function useAsyncStorage() {
   const [role, setRole] = useState<string | null>(null);
+  const secret_token = process.env.EXPO_PUBLIC_URBANIFY_SECRET_TOKEN!
+  
   const getRole = async () => {
     try {
       return await AsyncStorage.getItem("role");
@@ -24,7 +26,7 @@ export default function useAsyncStorage() {
     }
   };
 
-  const getToken = async (secret_token: string) => {
+  const getToken = async () => {
     try {
       return await SecureStore.getItemAsync(secret_token);
     } catch (err) {
