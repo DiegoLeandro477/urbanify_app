@@ -24,10 +24,7 @@ export default function useAuth() {
     setLoading(true);
     setErrorEmailOrPassword(false);
     try {
-      const response = await Login({
-        email,
-        password,
-      });
+      const response = await Login({email, password});
       // 🔹 Salva o token no SecureStore
       if (!response?.data.token) throw new Error("Token not found");
       Toast.show({

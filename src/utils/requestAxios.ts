@@ -9,7 +9,7 @@ export default function AxiosHTTP() {
     try {
       return await axios.post(`${API_URL}/user/login`, data)
     } catch (err) {
-      console.error("[LOGIN]: ",err)
+      console.error("[LOGIN]: ", err)
     }
   }
 

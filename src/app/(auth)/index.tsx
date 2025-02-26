@@ -22,9 +22,10 @@ export default function ProviderRole() {
         const role = await getRole();
         if (role === RoleEnum.ADMIN) {
           router.replace("/homePage");
-        } else if (role === RoleEnum.USER) {
-          router.replace("/adminPage");
-        }
+        } 
+        // else if (role === RoleEnum.USER) {
+        //   router.replace("/adminPage");
+        // }
       } catch (err) {
         console.log("[PROVIDER-ROLE]: ", err);
       }
