@@ -26,20 +26,20 @@ export default function useAuth() {
     try {
       const response = await Login({ email, password });
       // 🔹 Salva o token no SecureStore
-      if (!response?.data) throw new Error("Token not found");
+      if (!response?.data.token) throw new Error("Token not found");
       const { token } = response.data;
-      let role = undefined;
+      let roleJWT = undefined;
       try {
-        const { roleJWT }: any = jwtDecode(token);
-        role = roleJWT;
+        const { role }: any = jwtDecode(token);
+        roleJWT = role;
       } catch (err) {
         console.log("Erro ao extrair Role do Token: ", err);
-        role = response.data.role;
+        roleJWT = response.data.role;
       }
       await setToken(token);
 
-      console.log("[ROLE] -> ", role);
-      await setRole(role);
+      console.log("[ROLE] -> ", roleJWT);
+      await setRole(roleJWT);
       setErrorEmailOrPassword(false);
       router.navigate("/(auth)");
     } catch (err) {
