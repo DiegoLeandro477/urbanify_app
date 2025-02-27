@@ -1,17 +1,11 @@
 import useAsyncStorage from "@/hooks/useSyncStorage";
 import { router } from "expo-router";
 import React, { useEffect } from "react";
-import {
-  ActivityIndicator,
-  ActivityIndicatorBase,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 
 const enum RoleEnum {
-  ADMIN = 'ADMIN',
-  USER = 'USER'
+  ADMIN = "ADMIN",
+  USER = "USER",
 }
 
 export default function ProviderRole() {
@@ -22,10 +16,9 @@ export default function ProviderRole() {
         const role = await getRole();
         if (role === RoleEnum.ADMIN) {
           router.replace("/homePage");
-        } 
-        // else if (role === RoleEnum.USER) {
-        //   router.replace("/adminPage");
-        // }
+        } else if (role === RoleEnum.USER) {
+          router.replace("/adminPage");
+        }
       } catch (err) {
         console.log("[PROVIDER-ROLE]: ", err);
       }

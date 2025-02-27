@@ -3,15 +3,21 @@ import axios from "axios";
 
 export default function AxiosHTTP() {
   const API_URL = process.env.EXPO_PUBLIC_URBANIFY_API;
+  const LOGIN = process.env.EXPO_PUBLIC_XANO_LOGIN || "";
   const { getToken } = useAsyncStorage();
 
   const Login = async (data: any) => {
     try {
-      return await axios.post(`${API_URL}/user/login`, data)
+      return await axios.post(`${API_URL}${LOGIN}/user/login`, data, {
+        headers: {
+          Accept: "application/json", // Aceitar resposta em JSON
+          "Content-Type": "application/json", // Tipo de conteúdo para envio de arquivo
+        },
+      });
     } catch (err) {
-      console.error("[LOGIN]: ", err)
+      console.error("[LOGIN]: ", err);
     }
-  }
+  };
 
   const POST = async (url: string, data: any) => {
     const token = await getToken();

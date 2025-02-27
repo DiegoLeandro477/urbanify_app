@@ -121,7 +121,7 @@ export default function Home() {
       </View>
     </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   notificationContainer: {
@@ -241,4 +241,3 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
 });
-

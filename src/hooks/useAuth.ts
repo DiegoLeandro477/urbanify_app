@@ -24,20 +24,20 @@ export default function useAuth() {
     setLoading(true);
     setErrorEmailOrPassword(false);
     try {
-      const response = await Login({email, password});
+      const response = await Login({ email, password });
       // 🔹 Salva o token no SecureStore
-      if (!response?.data.token) throw new Error("Token not found");
-      Toast.show({
-        type: "success",
-        text1: "Login",
-        text2: response?.data.message,
-        position: "bottom",
-        visibilityTime: 2000,
-        autoHide: true,
-      });
-      await setToken(response?.data.token);
+      if (!response?.data) throw new Error("Token not found");
+      const { token } = response.data;
+      let role = undefined;
+      try {
+        const { roleJWT }: any = jwtDecode(token);
+        role = roleJWT;
+      } catch (err) {
+        console.log("Erro ao extrair Role do Token: ", err);
+        role = response.data.role;
+      }
+      await setToken(token);
 
-      const { role }: any = jwtDecode(response?.data.token);
       console.log("[ROLE] -> ", role);
       await setRole(role);
       setErrorEmailOrPassword(false);
@@ -45,7 +45,6 @@ export default function useAuth() {
     } catch (err) {
       console.error("Error: ", err);
       setLoading(false);
-      alert(err);
       setErrorEmailOrPassword(true);
     } finally {
       setLoading(false);

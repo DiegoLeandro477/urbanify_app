@@ -6,7 +6,7 @@ export default function LayoutProvideRole() {
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" />
         <Stack.Screen name="homePage" />
-        <Stack.Screen name="adminPage" />
+        <Stack.Screen name="adminPage/index" />
       </Stack>
     </>
   );

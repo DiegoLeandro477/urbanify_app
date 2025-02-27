@@ -9,8 +9,9 @@ import requestHTPP from "@/utils/requestAxios";
 import useAsyncStorage from "@/hooks/useSyncStorage";
 
 const useSyncReportsOnline = () => {
+  const XANO_REPORT = process.env.EXPO_PUBLIC_XANO_REPORT || "";
   const { GET, POST_FormData } = requestHTPP();
-  const {getToken} = useAsyncStorage();
+  const { getToken } = useAsyncStorage();
   const getStatusReportOn = async (report: Report) => {
     let status: StatusEnumType | undefined = undefined;
     try {
@@ -19,9 +20,10 @@ const useSyncReportsOnline = () => {
       const token = await getToken();
       if (!token) return;
 
-      const url = `/report/status/address/${report.address}/geohash/${report.geohash}`;
-
+      // const url = `/report/status/address/${report.address}/geohash/${report.geohash}`;
+      const url = `${XANO_REPORT}/report/${report.id}`;
       const response = await GET(url);
+      console.log("res -> ", response?.data);
       if (!response) return;
       status = StatusEnum[response?.data.status as keyof typeof StatusEnum];
     } catch (error) {
@@ -66,10 +68,10 @@ const useSyncReportsOnline = () => {
         throw new Error("No valid image provided.");
       }
       // Envia os dados para o Xano
-      const response = await POST_FormData("/report", formData);
+      const response = await POST_FormData(`${XANO_REPORT}/report`, formData);
 
       if (!response) return;
-      console.log("[DATABASE]: ", response.data.message);
+      console.log("[DATABASE]: ", JSON.stringify(response.data));
 
       const newReport = report;
       await removeReportOffline(report.id);
@@ -80,13 +82,7 @@ const useSyncReportsOnline = () => {
       await saveReportOffilne(newReport);
       return true;
     } catch (error: any) {
-      {
-        console.info(`HTTP Status: ${error.response.status || undefined}`);
-        console.error(
-          "Erro ao enviar relatório:",
-          error.response?.data || error.message
-        );
-      }
+      console.error("Erro ao enviar relatório:", error.response?.data || error);
     }
   };
 

@@ -49,7 +49,7 @@ export const getReports = async (): Promise<Report[] | null> => {
 export const getReport = async (id: string) => {
   const reports = await getReports();
   return reports
-    ? (reports.filter((rep: Report) => rep.id === id)[0] as Report)
+    ? (reports.filter((rep: Report) => rep.id.toString() === id)[0] as Report)
     : null;
 };
 
