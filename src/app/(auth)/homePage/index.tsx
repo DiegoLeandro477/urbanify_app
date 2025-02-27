@@ -109,14 +109,18 @@ export default function Home() {
           <Text style={[styles.reportsTitle, Font.l, ClassColor.c2]}>
             Histórico de Ocorrências
           </Text>
-          <FlatList
+          { reports.length > 0 ? 
+            <FlatList
             data={reports}
             renderItem={({ item }) => <RenderReport item={item} />}
             keyExtractor={(item) => item.id}
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.fletListIn}
-          />
+            /> : <View>
+              <Text>Olá</Text>
+              </View>
+        }
         </View>
       </View>
     </ScrollView>
